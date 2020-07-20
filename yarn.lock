@@ -820,7 +820,7 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@fullhuman/postcss-purgecss@^2.1.2":
+"@fullhuman/postcss-purgecss@^2.1.2", "@fullhuman/postcss-purgecss@^2.2.0":
   version "2.3.0"
   resolved "https://registry.npm.taobao.org/@fullhuman/postcss-purgecss/download/@fullhuman/postcss-purgecss-2.3.0.tgz#50a954757ec78696615d3e118e3fee2d9291882e"
   integrity sha1-UKlUdX7HhpZhXT4Rjj/uLZKRiC4=
@@ -7671,7 +7671,7 @@ table@^5.2.3:
     slice-ansi "^2.1.0"
     string-width "^3.0.0"
 
-tailwindcss@^1.5.1:
+tailwindcss@^1.4.5, tailwindcss@^1.5.1:
   version "1.5.1"
   resolved "https://registry.npm.taobao.org/tailwindcss/download/tailwindcss-1.5.1.tgz#a3eb10024f8e10786b8b6badcf9665b013bd03ee"
   integrity sha1-o+sQAk+OEHhri2utz5ZlsBO9A+4=
@@ -8160,6 +8160,14 @@ vm-browserify@^1.0.1:
   version "1.1.2"
   resolved "https://registry.npm.taobao.org/vm-browserify/download/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha1-eGQcSIuObKkadfUR56OzKobl3aA=
+
+vue-cli-plugin-tailwind@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.npm.taobao.org/vue-cli-plugin-tailwind/download/vue-cli-plugin-tailwind-1.4.1.tgz#b1cfba53115c5e02b1e1f8a08b672d3aacd24093"
+  integrity sha1-sc+6UxFcXgKx4figi2ctOqzSQJM=
+  dependencies:
+    "@fullhuman/postcss-purgecss" "^2.2.0"
+    tailwindcss "^1.4.5"
 
 vue-eslint-parser@^7.0.0:
   version "7.1.0"
