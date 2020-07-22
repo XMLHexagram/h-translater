@@ -5,7 +5,7 @@
     >
       <div class="align-bottom">
         <span class="text-4xl">H-transter </span>
-        <span class="text-xs">For Win v0.0.1beta</span>
+        <span class="text-xs">For Win v0.0.1-beta</span>
       </div>
     </div>
 
