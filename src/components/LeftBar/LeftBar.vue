@@ -13,7 +13,7 @@
 <script>
 // import LeftBarItem from './LeftBarItem'
 export default {
-  name: 'LeftBar',
+  name: 'HexLeftBar',
 
   // components: { LeftBarItem },
 

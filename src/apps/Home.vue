@@ -9,38 +9,36 @@
       </div>
     </div>
     <div class="h-6/7 w-full">
-      <card-container>
-        <card>
+      <hex-card-container>
+        <hex-card>
           <!-- <template #header></template> -->
           <template #body>
             <hex-switch></hex-switch>
           </template>
-        </card>
-        <card></card>
-        <card></card>
-        <card></card>
-        <card></card>
-        <card></card>
-        <card></card>
-        <card></card>
-        <card></card> <card></card>
-        <card></card>
-        <card></card>
-      </card-container>
+        </hex-card>
+        <hex-card></hex-card>
+        <hex-card></hex-card>
+        <hex-card></hex-card>
+        <hex-card></hex-card>
+        <hex-card></hex-card>
+        <hex-card></hex-card>
+        <!-- <hex-card></hex-card> <hex-card></hex-card><hex-card></hex-card
+        ><hex-card></hex-card><hex-card></hex-card> -->
+      </hex-card-container>
     </div>
   </div>
 </template>
 
 <script>
-import CardContainer from '@/components/Card/CardContainer'
-import HexSwitch from '@/components/Switch/HexSwitch'
-import Card from '@/components/Card/Card'
+// import CardContainer from '@/components/Card/CardContainer'
+// import HexSwitch from '@/components/Switch/HexSwitch'
+// import Card from '@/components/Card/Card'
 export default {
   name: 'Home',
   components: {
-    Card,
-    CardContainer,
-    HexSwitch
+    // Card,
+    // CardContainer,
+    // HexSwitch
   }
 }
 </script>
