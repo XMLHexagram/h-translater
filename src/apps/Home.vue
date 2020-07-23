@@ -8,10 +8,14 @@
         <span class="text-xs">For Win v0.0.1-beta</span>
       </div>
     </div>
-
     <div class="h-6/7 w-full">
       <card-container>
-        <card></card>
+        <card>
+          <!-- <template #header></template> -->
+          <template #body>
+            <hex-switch></hex-switch>
+          </template>
+        </card>
         <card></card>
         <card></card>
         <card></card>
@@ -29,12 +33,14 @@
 
 <script>
 import CardContainer from '@/components/Card/CardContainer'
+import HexSwitch from '@/components/Switch/HexSwitch'
 import Card from '@/components/Card/Card'
 export default {
   name: 'Home',
   components: {
     Card,
-    CardContainer
+    CardContainer,
+    HexSwitch
   }
 }
 </script>
