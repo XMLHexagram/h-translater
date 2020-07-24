@@ -8,12 +8,12 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/apps/Home')
+    component: () => import('@/page/mainPage/apps/Home')
   },
   {
     path: '/about',
     name: 'About',
-    component: () => import('@/apps/About')
+    component: () => import('@/page/mainPage/apps/About')
   }
 ]
 
