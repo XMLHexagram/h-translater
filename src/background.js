@@ -8,11 +8,37 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
+let subWin
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
+
+function createSubWindow() {
+  subWin = new BrowserWindow({
+    width: 300,
+    height: 300,
+    webPreferences: {
+      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+    }
+  })
+
+  subWin.on('closed', () => {
+    subWin = null
+  })
+
+  if (process.env.WEBPACK_DEV_SERVER_URL) {
+    // Load the url of the dev server if in development mode
+    subWin.loadURL(process.env.WEBPACK_DEV_SERVER_URL + 'sub')
+    if (!process.env.IS_TEST) win.webContents.openDevTools()
+  } else {
+    createProtocol('app')
+    // Load the index.html when not in development
+    // TODO:需要修改
+    subWin.loadURL('app://./index.html')
+  }
+}
 
 function createWindow() {
   // Create the browser window.
@@ -33,11 +59,12 @@ function createWindow() {
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL+'index')
+    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL + 'index')
     if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
     createProtocol('app')
     // Load the index.html when not in development
+    // TODO:需要修改
     win.loadURL('app://./index.html')
   }
 
@@ -76,6 +103,7 @@ app.on('ready', async () => {
     }
   }
   createWindow()
+  createSubWindow()
 })
 
 // Exit cleanly on request from parent process in development mode.
