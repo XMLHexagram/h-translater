@@ -42,7 +42,7 @@ export default {
   methods: {
     async submit() {
       this.translate = await TranslateCaiyun(this.text)
-      console.log(this.translate+"translate")
+      console.log(this.translate + 'translate')
     },
     clear() {
       this.text = ''
