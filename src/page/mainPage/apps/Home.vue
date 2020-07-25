@@ -43,7 +43,7 @@ export default {
   components: {},
   methods: {
     showSubWin() {
-      ipcRenderer.sendSync('create-sub-win')
+      ipcRenderer.send('create-sub-win')
     }
   }
 }

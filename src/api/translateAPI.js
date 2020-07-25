@@ -2,6 +2,7 @@ import axios from 'axios'
 
 export async function TranslateCaiyun(source) {
   let url = 'http://api.interpreter.caiyunai.com/v1/translator'
+  // let url = 'https://api.interpreter.caiyunai.com/v1/dict'
   let token = process.env.VUE_APP_CAIYUN_TRANSLATE_TOKEN
   let result = await axios({
     method: 'post',
@@ -9,7 +10,7 @@ export async function TranslateCaiyun(source) {
     data: {
       source: source,
       detect: true,
-      trans_type: 'auto2zh'
+      trans_type: 'en2zh'
     },
     headers: {
       'content-type': 'application/json',

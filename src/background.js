@@ -7,8 +7,8 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
-let subWin
+let win = null
+let subWin = null
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -23,6 +23,7 @@ function createSubWin() {
     frame: false,
     transparent: true,
     alwaysOnTop: true,
+    show: false,
     webPreferences: {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
     }
@@ -32,6 +33,9 @@ function createSubWin() {
     subWin = null
   })
 
+  subWin.once('ready-to-show', () => {
+    subWin.show()
+  })
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     subWin.loadURL(process.env.WEBPACK_DEV_SERVER_URL + 'sub')
@@ -40,7 +44,7 @@ function createSubWin() {
     createProtocol('app')
     // Load the index.html when not in development
     // TODO:需要修改
-    subWin.loadURL('app://./index.html')
+    subWin.loadURL('app://./sub.html')
   }
 }
 
@@ -55,10 +59,12 @@ function createWindow() {
     maxWidth: 900,
     maxHeight: (900 / 5) * 4,
     fullscreenable: false,
+    // frame: false,
+    show: false,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      // nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+      // nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       enableRemoteModule: true,
       nodeIntegration: true
     }
@@ -77,6 +83,10 @@ function createWindow() {
 
   win.on('closed', () => {
     win = null
+  })
+
+  win.once('ready-to-show', () => {
+    win.show()
   })
 }
 
@@ -110,7 +120,7 @@ app.on('ready', async () => {
     }
   }
   createWindow()
-  // createSubWindow()
+  // createSubWin()
 })
 
 // Exit cleanly on request from parent process in development mode.
@@ -129,5 +139,8 @@ if (isDevelopment) {
 }
 
 ipcMain.on('create-sub-win', () => {
-  createSubWin()
+  // console.log('test')
+  if (subWin === null) {
+    createSubWin()
+  }
 })
