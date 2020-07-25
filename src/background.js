@@ -17,8 +17,12 @@ protocol.registerSchemesAsPrivileged([
 
 function createSubWindow() {
   subWin = new BrowserWindow({
-    width: 300,
-    height: 300,
+    width: 450,
+    height: 150,
+    resizable: false,
+    frame: false,
+    transparent: true,
+    alwaysOnTop: true,
     webPreferences: {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
     }
@@ -31,7 +35,7 @@ function createSubWindow() {
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     subWin.loadURL(process.env.WEBPACK_DEV_SERVER_URL + 'sub')
-    if (!process.env.IS_TEST) win.webContents.openDevTools()
+    if (!process.env.IS_TEST) subWin.webContents.openDevTools()
   } else {
     createProtocol('app')
     // Load the index.html when not in development
