@@ -43,13 +43,7 @@ export default {
   components: {},
   methods: {
     showSubWin() {
-      console.log('test')
-      console.log(ipcRenderer.sendSync('synchronous-message', 'ping'))
-
-      ipcRenderer.on('asynchronous-reply', (event, arg) => {
-        console.log(arg) // prints "pong"
-      })
-      ipcRenderer.send('asynchronous-message', 'ping')
+      ipcRenderer.sendSync('create-sub-win')
     }
   }
 }

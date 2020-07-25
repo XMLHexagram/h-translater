@@ -128,13 +128,6 @@ if (isDevelopment) {
   }
 }
 
-ipcMain.on('asynchronous-message', (event, arg) => {
-  console.log(arg) // prints "ping"
-  event.reply('asynchronous-reply', 'pong')
+ipcMain.on('create-sub-win', () => {
   createSubWin()
-})
-
-ipcMain.on('synchronous-message', (event, arg) => {
-  console.log(arg) // prints "ping"
-  event.returnValue = 'pong'
 })
