@@ -10,13 +10,15 @@ import {
   CardContainer,
   LeftBar,
   LeftBarItem,
-  Switch
+  Switch,
+  Button
 } from '@/components/hex-ui'
 Vue.use(Card)
 Vue.use(CardContainer)
 Vue.use(LeftBar)
 Vue.use(LeftBarItem)
 Vue.use(Switch)
+Vue.use(Button)
 
 Vue.config.productionTip = false
 
