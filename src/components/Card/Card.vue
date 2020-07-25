@@ -21,7 +21,7 @@ export default {
 }
 
 .header {
-  @apply text-xl font-bold flex justify-center items-center row-span-1;
+  @apply text-gray-300 text-base font-medium flex justify-center items-center row-span-1;
 }
 
 .body {

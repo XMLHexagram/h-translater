@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -15,7 +15,7 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
 
-function createSubWindow() {
+function createSubWin() {
   subWin = new BrowserWindow({
     width: 450,
     height: 150,
@@ -45,6 +45,7 @@ function createSubWindow() {
 }
 
 function createWindow() {
+  // console.log(process.env.ELECTRON_NODE_INTEGRATION)
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
@@ -57,7 +58,9 @@ function createWindow() {
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+      // nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+      enableRemoteModule: true,
+      nodeIntegration: true
     }
   })
 
@@ -107,7 +110,7 @@ app.on('ready', async () => {
     }
   }
   createWindow()
-  createSubWindow()
+  // createSubWindow()
 })
 
 // Exit cleanly on request from parent process in development mode.
@@ -124,3 +127,14 @@ if (isDevelopment) {
     })
   }
 }
+
+ipcMain.on('asynchronous-message', (event, arg) => {
+  console.log(arg) // prints "ping"
+  event.reply('asynchronous-reply', 'pong')
+  createSubWin()
+})
+
+ipcMain.on('synchronous-message', (event, arg) => {
+  console.log(arg) // prints "ping"
+  event.returnValue = 'pong'
+})

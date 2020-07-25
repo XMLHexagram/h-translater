@@ -16,7 +16,14 @@
             <hex-switch></hex-switch>
           </template>
         </hex-card>
-        <hex-card></hex-card>
+        <hex-card>
+          <template #header>
+            运行式程
+          </template>
+          <template #body>
+            <hex-button @click="showSubWin">Start</hex-button>
+          </template>
+        </hex-card>
         <hex-card></hex-card>
         <hex-card></hex-card>
         <hex-card></hex-card>
@@ -30,15 +37,20 @@
 </template>
 
 <script>
-// import CardContainer from '@/components/Card/CardContainer'
-// import HexSwitch from '@/components/Switch/HexSwitch'
-// import Card from '@/components/Card/Card'
+const { ipcRenderer } = window.require('electron')
 export default {
   name: 'Home',
-  components: {
-    // Card,
-    // CardContainer,
-    // HexSwitch
+  components: {},
+  methods: {
+    showSubWin() {
+      console.log('test')
+      console.log(ipcRenderer.sendSync('synchronous-message', 'ping'))
+
+      ipcRenderer.on('asynchronous-reply', (event, arg) => {
+        console.log(arg) // prints "pong"
+      })
+      ipcRenderer.send('asynchronous-message', 'ping')
+    }
   }
 }
 </script>
