@@ -25,7 +25,8 @@ function createSubWin() {
     alwaysOnTop: true,
     show: false,
     webPreferences: {
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+      // nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: true
     }
   })
 
@@ -137,8 +138,11 @@ if (isDevelopment) {
 }
 
 ipcMain.on('create-sub-win', () => {
-  // console.log('test')
   if (subWin === null) {
     createSubWin()
   }
+})
+
+ipcMain.on('change-sub-height', (_, arg) => {
+  subWin.setSize(180, arg)
 })

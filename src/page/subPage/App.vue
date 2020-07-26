@@ -52,8 +52,7 @@ export default {
   methods: {
     async submit() {
       await this.getTranslate()
-      console.log(document.body.offsetHeight)
-      ipcRenderer.send('change-sub-height')
+      ipcRenderer.send('change-sub-height', document.body.offsetHeight)
     },
     clear() {
       this.text = ''
