@@ -37,6 +37,7 @@
 </template>
 
 <script>
+// TODO:放到原型链上去
 const { ipcRenderer } = window.require('electron')
 export default {
   name: 'Home',

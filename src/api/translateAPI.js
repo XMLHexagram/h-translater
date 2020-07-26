@@ -2,7 +2,6 @@ import axios from 'axios'
 
 export async function TranslateCaiyun(source) {
   let url = 'http://api.interpreter.caiyunai.com/v1/translator'
-  // let url = 'https://api.interpreter.caiyunai.com/v1/dict'
   let token = process.env.VUE_APP_CAIYUN_TRANSLATE_TOKEN
   let result = await axios({
     method: 'post',
@@ -10,7 +9,7 @@ export async function TranslateCaiyun(source) {
     data: {
       source: source,
       detect: true,
-      trans_type: 'en2zh'
+      trans_type: 'auto2zh'
     },
     headers: {
       'content-type': 'application/json',
@@ -23,6 +22,34 @@ export async function TranslateCaiyun(source) {
     })
     .catch(() => {
       alert('彩云API调用发生未知错误')
+    })
+  return result
+}
+
+export async function WordTranslateCaiyun(source) {
+  let url = 'https://api.interpreter.caiyunai.com/v1/dict'
+  let token = process.env.VUE_APP_CAIYUN_TRANSLATE_TOKEN
+  let result = await axios({
+    method: 'post',
+    url: url,
+    data: {
+      source: source,
+      trans_type: 'en2zh'
+    },
+    headers: {
+      'content-type': 'application/json',
+      'x-authorization': 'token ' + token
+    }
+  })
+    .then(res => {
+      let result = {}
+      result.explanations = res.data.dictionary.explanations
+      result.prons = res.data.dictionary.prons
+      result.entry = res.data.dictionary.entry
+      return result
+    })
+    .catch(() => {
+      alert('单词-彩云API调用发生未知错误')
     })
   return result
 }

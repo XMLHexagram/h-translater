@@ -17,8 +17,8 @@ protocol.registerSchemesAsPrivileged([
 
 function createSubWin() {
   subWin = new BrowserWindow({
-    width: 450,
-    height: 150,
+    width: 180,
+    height: 400,
     resizable: false,
     frame: false,
     transparent: true,
@@ -43,7 +43,6 @@ function createSubWin() {
   } else {
     createProtocol('app')
     // Load the index.html when not in development
-    // TODO:需要修改
     subWin.loadURL('app://./sub.html')
   }
 }
@@ -77,7 +76,6 @@ function createWindow() {
   } else {
     createProtocol('app')
     // Load the index.html when not in development
-    // TODO:需要修改
     win.loadURL('app://./index.html')
   }
 
