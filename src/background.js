@@ -19,7 +19,11 @@ function createSubWin() {
   subWin = new BrowserWindow({
     width: 180,
     height: 400,
-    resizable: false,
+    minWidth: 180,
+    maxWidth: 180,
+    // minHeight: 100,
+    // maxHeight: 100,
+    // resizable: false,
     frame: false,
     transparent: true,
     alwaysOnTop: true,
@@ -143,6 +147,9 @@ ipcMain.on('create-sub-win', () => {
   }
 })
 
-ipcMain.on('change-sub-height', (_, arg) => {
-  subWin.setSize(180, arg)
+ipcMain.on('change-sub-height', (event, arg) => {
+  // console.log(arg)
+  let subWinSize = subWin.getSize()
+  subWin.setSize(subWinSize[0], arg)
+  // console.log(subWin.getSize())
 })

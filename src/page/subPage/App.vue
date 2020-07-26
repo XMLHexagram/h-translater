@@ -49,10 +49,14 @@ export default {
       isWord: false
     }
   },
+  mounted() {
+    ipcRenderer.send('change-sub-height', document.body.offsetHeight+10)
+  },
   methods: {
     async submit() {
       await this.getTranslate()
-      ipcRenderer.send('change-sub-height', document.body.offsetHeight)
+      // console.log(document.body.offsetHeight)
+      ipcRenderer.send('change-sub-height', document.body.offsetHeight+10)
     },
     clear() {
       this.text = ''
