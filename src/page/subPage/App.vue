@@ -60,7 +60,11 @@ export default {
     async getTranslate() {
       if (this.text.indexOf(' ') === -1) {
         this.isWord = true
-        this.wordTranslate = await WordTranslateCaiyun(this.text)
+        let result = await WordTranslateCaiyun(this.text)
+        this.wordTranslate.entry = result.entry
+        this.wordTranslate.explanations = result.explanations
+        // console.log(result.prons)
+        this.wordTranslate.prons = result.prons
       } else {
         this.isWord = false
         this.translate = await TranslateCaiyun(this.text)
@@ -70,7 +74,14 @@ export default {
   computed: {
     pronForShow() {
       // console.log(this.wordTranslate.prons.en)
+      // console.log(Object.keys(this.wordTranslate.prons))
+      // console.log(this.wordTranslate.prons.en)
       if (
+        this.wordTranslate.prons === undefined ||
+        this.wordTranslate.prons === null
+      ) {
+        return ''
+      } else if (
         this.wordTranslate.prons.en !== null &&
         this.wordTranslate.prons.en !== undefined
       ) {
