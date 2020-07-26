@@ -15,7 +15,7 @@
 
     <div v-if="isWord" class="translated text-left p-2">
       <span class="font-bold mr-2">{{ wordTranslate.entry }} </span>
-      <span class="whitespace-no-wrap">{{ wordTranslate.prons.en }}</span>
+      <span class="whitespace-no-wrap">{{ pronForShow }}</span>
       <div v-for="item in wordTranslate.explanations" :key="item" class="my-1">
         <span>{{ item }}</span>
       </div>
@@ -29,6 +29,8 @@
 
 <script>
 import { TranslateCaiyun, WordTranslateCaiyun } from '@/api/translateAPI'
+// TODO:放到原型链上去
+const { ipcRenderer } = window.require('electron')
 
 export default {
   name: 'App',
@@ -49,6 +51,14 @@ export default {
   },
   methods: {
     async submit() {
+      await this.getTranslate()
+      console.log(document.body.offsetHeight)
+      ipcRenderer.send('change-sub-height')
+    },
+    clear() {
+      this.text = ''
+    },
+    async getTranslate() {
       if (this.text.indexOf(' ') === -1) {
         this.isWord = true
         this.wordTranslate = await WordTranslateCaiyun(this.text)
@@ -56,9 +66,26 @@ export default {
         this.isWord = false
         this.translate = await TranslateCaiyun(this.text)
       }
-    },
-    clear() {
-      this.text = ''
+    }
+  },
+  computed: {
+    pronForShow() {
+      // console.log(this.wordTranslate.prons.en)
+      if (
+        this.wordTranslate.prons.en !== null &&
+        this.wordTranslate.prons.en !== undefined
+      ) {
+        // console.log(1)
+        return this.wordTranslate.prons.en
+      } else if (
+        this.wordTranslate.prons['en-us'] !== null &&
+        this.wordTranslate.prons['en-us'] !== undefined
+      ) {
+        // console.log(2)
+        return this.wordTranslate.prons['en-us']
+      }
+      // console.log(3)
+      return ''
     }
   }
 }
@@ -66,7 +93,7 @@ export default {
 
 <style scoped>
 .container {
-  @apply bg-transparent text-center w-screen h-screen text-gray-300;
+  @apply bg-transparent text-center w-screen h-full text-gray-300;
 }
 
 .source {
@@ -74,6 +101,7 @@ export default {
 }
 .translated {
   -webkit-app-region: drag;
+  min-height: 10px;
   @apply bg-gray-700 bg-opacity-50;
 }
 
