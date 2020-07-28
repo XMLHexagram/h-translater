@@ -10,6 +10,13 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 let win = null
 let subWin = null
 
+const Store = require('electron-store')
+
+const store = new Store()
+
+store.set('unicorn', '🦄')
+console.log(store.get('unicorn'))
+
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
