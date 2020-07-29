@@ -5,17 +5,11 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
+import './electron/store'
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win = null
 let subWin = null
-
-const Store = require('electron-store')
-
-const store = new Store()
-
-store.set('unicorn', '🦄')
-console.log(store.get('unicorn'))
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
