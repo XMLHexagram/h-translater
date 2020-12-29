@@ -7,6 +7,7 @@
           type="checkbox"
           name="check"
           value="check"
+          @click="changeIsOn"
         />
         <div class="indicator"></div>
       </div>
@@ -17,7 +18,20 @@
 
 <script>
 export default {
-  name: 'HexSwitch'
+  name: 'HexSwitch',
+  props: {
+    isOn: Boolean
+  },
+  model: {
+    prop: 'isOn',
+    event: 'change'
+  },
+  methods: {
+    changeIsOn: function() {
+      this.$emit('change', !this.isOn)
+      console.log(1)
+    }
+  }
 }
 </script>
 
@@ -73,5 +87,10 @@ export default {
 
 .toggle-state:checked ~ .indicator {
   transform: translate3d(25%, 0, 0);
+  background-color: red;
+}
+
+.toggle:checked ~ .indicator {
+  background-color: red;
 }
 </style>

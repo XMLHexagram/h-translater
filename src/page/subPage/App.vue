@@ -4,6 +4,7 @@
       <textarea
         @keydown.ctrl.enter="submit"
         @keydown.esc="clear"
+        @input="autoSubmit"
         v-model="text"
         type="text"
         required
@@ -13,22 +14,26 @@
       </textarea>
     </div>
 
-    <div v-if="isWord" class="translated text-left p-2">
-      <span class="font-bold mr-2">{{ wordTranslate.entry }} </span>
+    <div v-if="isDict" class="translated text-left p-2">
+      <span class="font-bold mr-2">{{ dictionary.entry }} </span>
       <span class="whitespace-no-wrap">{{ pronForShow }}</span>
-      <div v-for="item in wordTranslate.explanations" :key="item" class="my-1">
+      <div v-for="item in dictionary.explanations" :key="item" class="my-1">
         <span>{{ item }}</span>
       </div>
     </div>
 
     <div v-else class="translated">
-      <span>{{ translate }}</span>
+      <span class="font-bold mr-2 ">{{ translator.target }}</span>
+      <span class="font-bold mr-2 block">自信度:{{ translator.confidence.toFixed(2) }}</span>
     </div>
   </div>
 </template>
 
 <script>
-import { TranslateCaiyun, WordTranslateCaiyun } from '@/api/translateAPI'
+import {
+  ChineseWordTranslateCaiyun,
+  EnglishWordTranslateCaiyun
+} from '@/api/translateAPI'
 // TODO:放到原型链上去
 const { ipcRenderer } = window.require('electron')
 
@@ -37,8 +42,7 @@ export default {
   data() {
     return {
       text: '',
-      translate: '',
-      wordTranslate: {
+      dictionary: {
         entry: '',
         explanations: [],
         prons: {
@@ -46,33 +50,75 @@ export default {
           'en-us': ''
         }
       },
-      isWord: false
+      translator: {
+        confidence: 0,
+        target: ''
+      },
+      isDict: true,
+      timer:null,
     }
   },
   mounted() {
-    ipcRenderer.send('change-sub-height', document.body.offsetHeight+10)
+    ipcRenderer.send('change-sub-height', document.body.offsetHeight + 10)
   },
   methods: {
     async submit() {
-      await this.getTranslate()
+        await this.getTranslate()
+        ipcRenderer.send('change-sub-height', document.body.offsetHeight + 10)
       // console.log(document.body.offsetHeight)
-      ipcRenderer.send('change-sub-height', document.body.offsetHeight+10)
+    },
+    async autoSubmit() {
+      clearTimeout(this.timer)
+      this.timer = setTimeout(async ()=> {
+        await this.getTranslate()
+        ipcRenderer.send('change-sub-height', document.body.offsetHeight + 10)
+      },1500)
+      // console.log(document.body.offsetHeight)
     },
     clear() {
       this.text = ''
     },
     async getTranslate() {
-      if (this.text.indexOf(' ') === -1) {
-        this.isWord = true
-        let result = await WordTranslateCaiyun(this.text)
-        this.wordTranslate.entry = result.entry
-        this.wordTranslate.explanations = result.explanations
-        // console.log(result.prons)
-        this.wordTranslate.prons = result.prons
+      // if (this.text.indexOf(' ') === -1) {
+      //   this.isWord = true
+      //   let result = await WordTranslateCaiyun(this.text)
+      //   this.wordTranslate.entry = result.entry
+      //   this.wordTranslate.explanations = result.explanations
+      //   // console.log(result.prons)
+      //   this.wordTranslate.prons = result.prons
+      // } else {
+      //   this.isWord = false
+      //   this.translate = await TranslateCaiyun(this.text)
+      // }
+
+      const pattern = new RegExp('[\u4E00-\u9FA5]+')
+      let result
+      if (pattern.test(this.text)) {
+        // 是中文
+        result = await ChineseWordTranslateCaiyun(this.text)
+        console.log(result)
       } else {
-        this.isWord = false
-        this.translate = await TranslateCaiyun(this.text)
+        // console.log(222)
+        result = await EnglishWordTranslateCaiyun(this.text)
+        // console.log(result)
       }
+      // console.log(1,result)
+      if (result.isDict) {
+        // console.log(111)
+        // console.log(result)
+        this.isDict = result.isDict
+        this.dictionary.entry = result.dictionary.entry
+        this.dictionary.explanations = result.dictionary.explanations
+        this.dictionary.prons = result.dictionary.prons
+      } else {
+        this.isDict = result.isDict
+        this.translator = {
+          target: result.target,
+          confidence: result.confidence,
+        }
+      }
+
+      console.log(this.dictionary)
     }
   },
   computed: {
@@ -81,22 +127,22 @@ export default {
       // console.log(Object.keys(this.wordTranslate.prons))
       // console.log(this.wordTranslate.prons.en)
       if (
-        this.wordTranslate.prons === undefined ||
-        this.wordTranslate.prons === null
+        this.dictionary.prons === undefined ||
+        this.dictionary.prons === null
       ) {
         return ''
       } else if (
-        this.wordTranslate.prons.en !== null &&
-        this.wordTranslate.prons.en !== undefined
+        this.dictionary.prons.en !== null &&
+        this.dictionary.prons.en !== undefined
       ) {
         // console.log(1)
-        return this.wordTranslate.prons.en
+        return this.dictionary.prons.en
       } else if (
-        this.wordTranslate.prons['en-us'] !== null &&
-        this.wordTranslate.prons['en-us'] !== undefined
+        this.dictionary.prons['en-us'] !== null &&
+        this.dictionary.prons['en-us'] !== undefined
       ) {
         // console.log(2)
-        return this.wordTranslate.prons['en-us']
+        return this.dictionary.prons['en-us']
       }
       // console.log(3)
       return ''
@@ -113,6 +159,7 @@ export default {
 .source {
   @apply bg-gray-800 bg-opacity-50;
 }
+
 .translated {
   -webkit-app-region: drag;
   min-height: 10px;

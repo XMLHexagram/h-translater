@@ -21,7 +21,7 @@ export default {
 }
 
 .header {
-  @apply text-gray-300 text-base font-medium flex justify-center items-center row-span-1;
+  @apply text-gray-300 text-base font-medium flex justify-center items-center row-span-1 flex-col;
 }
 
 .body {

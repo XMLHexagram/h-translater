@@ -2,6 +2,7 @@ module.exports = {
   purge: ['./src/**/*.html', './src/**/*.vue', './src/**/*.jsx'],
   theme: {
     extend: {
+      borderWidth: ['first'],
       gridTemplateRows: {
         '9': 'repeat(9, minmax(0, 1fr))'
       },

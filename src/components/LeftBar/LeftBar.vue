@@ -3,7 +3,7 @@
     <div
       class="h-1/10 flex justify-center items-center border-gray-900 border-b-2"
     >
-      <slot name="header">H-transter</slot>
+      <slot name="header">H-translator</slot>
     </div>
 
     <slot></slot>
